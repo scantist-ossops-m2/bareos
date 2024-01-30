@@ -42,4 +42,9 @@ else()
     PROPERTIES FIXTURES_REQUIRED
                "system:dedup:backup-job-fixture;system:dedup-fixture"
   )
+  set_tests_properties(
+    system:dedup:purge-truncate
+    PROPERTIES FIXTURES_REQUIRED
+               "system:dedup:backup-job-fixture;system:dedup-fixture"
+  )
 endif()
