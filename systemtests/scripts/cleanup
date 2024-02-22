@@ -3,6 +3,8 @@ set -u
 #shellcheck source=../environment.in
 . ./environment
 
+tail -n +1 ${working:?}/*.traceback || true
+
 rm -rf "${tmp:?}"/*
 rm -rf "${logdir:?}"/*.log
 rm -rf "${working:?}"/*.bsr "${working:?}"/log*.sd
