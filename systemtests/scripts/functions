@@ -474,20 +474,20 @@ run_bareos()
 run_bconsole()
 {
     bconsole_file="${1:-${tmp}/bconcmds}"
-    retval=0
+    local error_code=0
     if [ -f "$bconsole_file" ]; then
-	# subshells need to be used here to prevent -e/pipefail from killing
-	# the test on timeout!
+	# 'cmd || ec=$?' is used to prevent "set -e" from killing the script
+	# before we had the chance to kill the daemons (in case of timeout)
 	if test "$debug" -eq 1 ; then
-            retval=$(timeout 100s "${BAREOS_BCONSOLE_BINARY}" -c "${conf}" < "$bconsole_file"; echo $?)
+            timeout 100s "${BAREOS_BCONSOLE_BINARY}" -c "${conf}" < "$bconsole_file" || error_code=$?
 	else
-            retval=$(timeout 100s "${BAREOS_BCONSOLE_BINARY}" -c "${conf}" < "$bconsole_file" 2>&1 >/dev/null; echo $?)
+            timeout 100s "${BAREOS_BCONSOLE_BINARY}" -c "${conf}" < "$bconsole_file" 2>&1 >/dev/null || error_code=$?
 	fi
     fi
-    if (( retval == 124 )); then
+    if (( error_code == 124 )); then
 	bin/bareos stop -SEGV
     fi
-    return "$retval"
+    return "$error_code"
 }
 
 run_btape()
