@@ -28,7 +28,6 @@ cat <<END_OF_DATA >"$tmp/bconcmds"
 @$out /dev/null
 messages
 @$out $parallelbackuplog
-setdebug level=200 all trace=1
 run job=${backupjob} level=Full yes
 run job=${backupjob} level=Full yes
 run job=${backupjob} level=Full yes
@@ -58,7 +57,6 @@ restore jobid=${backup_jobids[4]} where=$tmp/restore5 all done yes
 restore jobid=${backup_jobids[5]} where=$tmp/restore6 all done yes
 wait
 messages
-setdebug level=100 trace=0 all
 quit
 END_OF_DATA
 
